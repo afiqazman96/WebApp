@@ -1,334 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stock Requisition - WebApp</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #d9e7d9;
-      color: #2c3e50;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      height: 60px;
-      background: #a8d5ba;
-      border-bottom: 2px solid #7fb291;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      z-index: 10;
-    }
-
-    header .logo {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #244133;
-    }
-
-    .main-layout {
-      display: flex;
-      flex: 1;
-      min-height: calc(100vh - 60px); /* header height */
-    }
-
-    nav {
-      width: 220px;
-      background-color: #c2e1ca;
-      padding: 24px 0;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    nav li {
-      width: 100%;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #2f4f4f;
-      font-size: 15px;
-      padding: 10px 16px;
-      border-radius: 8px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      display: flex;
-      align-items: center;
-    }
-
-    nav a:hover,
-    nav a.active {
-      background-color: #6ea28b;
-      color: #e7f0e9;
-      box-shadow: 0 3px 8px rgba(110, 162, 139, 0.5);
-    }
-
-    nav a span.icon {
-      margin-right: 8px;
-      font-size: 18px;
-      line-height: 1;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 32px;
-      padding: 48px 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-      flex-grow: 1;
-    }
-
-    .left-panel, .right-panel {
-      background: #fff;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    h2, h3 {
-      margin-top: 0;
-      font-weight: 600;
-      color: #244133;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 8px;
-      margin-top: 24px;
-      font-size: 15px;
-    }
-
-    thead tr {
-      background-color: #6ea28b;
-      color: white;
-      border-radius: 12px;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    thead th {
-      padding: 14px 18px;
-      text-align: left;
-      border: none;
-    }
-
-    tbody tr {
-      background-color: #f8faf7;
-      border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(110, 162, 139, 0.15);
-    }
-
-    tbody tr td {
-      padding: 16px 18px;
-      vertical-align: middle;
-      border: none;
-    }
-
-    .product-name {
-      font-weight: 600;
-      color: #3a5a33;
-    }
-
-    select {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid #9ecba1;
-      border-radius: 12px;
-      font-size: 14px;
-      background-color: #e8f0e8;
-      color: #2f4f2f;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image:
-        url('data:image/svg+xml;utf8,<svg fill="%232f4f2f" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'),
-        linear-gradient(to bottom, #e8f0e8 0%,#d3dfd3 100%);
-      background-repeat: no-repeat, repeat;
-      background-position: right 12px top 50%, 0 0;
-      background-size: 12px auto, 100%;
-      cursor: pointer;
-    }
-
-    select:hover {
-      border-color: #6ea28b;
-      box-shadow: 0 0 6px #a4c79d88;
-    }
-
-    select:focus {
-      outline: none;
-      border-color: #4c7a4c;
-      box-shadow: 0 0 8px #6ea28baa;
-      background-color: #d6e5d6;
-    }
-
-    .qty, .subtotal {
-      text-align: right;
-      font-weight: 600;
-      color: #4a6b44;
-    }
-
-    .summary {
-      font-size: 16px;
-      line-height: 1.8;
-      color: #3a5a33;
-    }
-
-    .summary p {
-      margin: 12px 0;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 28px;
-      padding: 14px 24px;
-      background-color: #6ea28b;
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 16px;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-      box-shadow: 0 3px 8px rgba(110, 162, 139, 0.5);
-    }
-
-    .btn:hover {
-      background-color: #59865a;
-      box-shadow: 0 6px 14px rgba(89, 134, 90, 0.7);
-    }
-
-    @media (max-width: 768px) {
-      .main-layout {
-        flex-direction: column;
-      }
-
-      nav {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-      }
-
-      nav ul {
-        flex-direction: row;
-        justify-content: space-around;
-      }
-
-      .container {
-        grid-template-columns: 1fr;
-        padding: 24px 16px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERP SaaS Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">WebApps</div>
-  </header>
 
-  <div class="main-layout">
-    <nav>
-      <ul>
-        <li><a href="#" class="active"><span class="icon">🏠</span>Dashboard</a></li>
-        <li><a href="#"><span class="icon">📦</span>Stock</a></li>
-        <li><a href="#"><span class="icon">📋</span>Orders</a></li>
-        <li><a href="#"><span class="icon">⚙️</span>Settings</a></li>
-      </ul>
-    </nav>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>ERP SaaS</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Procurement</a>
+    <a href="#">Inventory</a>
+    <a href="#">Sales</a>
+    <a href="#">Finance</a>
+    <a href="#">Reports</a>
+  </div>
 
-    <div class="container" role="main">
-      <main class="left-panel">
-        <h2>Stock Requisition</h2>
-        <table aria-label="Stock requisition table">
-          <thead>
-            <tr>
-              <th>Curry Powder</th>
-              <th>Supplier</th>
-              <th>Qty</th>
-              <th>Subtotal (RM)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="product-name">
-                DRY-001-500 - Curry Powder Babas<br />
-                500GM (16PKT/CTN)
-              </td>
-              <td>
-                <select aria-label="Select supplier for 500GM Curry Powder">
-                  <option value="ali50">[RM50/CTN] Ali Supply Sdn Bhd</option>
-                  <option value="badrul52">[RM52/CTN] Badrul Supply Sdn Bhd</option>
-                </select>
-              </td>
-              <td class="qty">10</td>
-              <td class="subtotal">500.00</td>
-            </tr>
-            <tr>
-              <td class="product-name">
-                DRY-001-450 - Curry Powder Babas<br />
-                450GM (18PKT/CTN)
-              </td>
-              <td>
-                <select aria-label="Select supplier for 450GM Curry Powder">
-                  <option value="ali48">[RM48/CTN] Ali Supply Sdn Bhd</option>
-                  <option value="badrul49">[RM49/CTN] Badrul Supply Sdn Bhd</option>
-                </select>
-              </td>
-              <td class="qty">5</td>
-              <td class="subtotal">48.00</td>
-            </tr>
-            <tr>
-              <td class="product-name">
-                DRY-001-1000 - Curry Powder Babas<br />
-                1KG (10PKT/CTN)
-              </td>
-              <td>
-                <select aria-label="Select supplier for 1KG Curry Powder">
-                  <option value="badrul60">[RM60/CTN] Badrul Supply Sdn Bhd</option>
-                  <option value="ali59">[RM59/CTN] Ali Supply Sdn Bhd</option>
-                </select>
-              </td>
-              <td class="qty">8</td>
-              <td class="subtotal">60.00</td>
-            </tr>
-          </tbody>
-        </table>
-      </main>
+  <!-- Content -->
+  <div class="content">
+    <div class="header">
+      <h1>Dashboard</h1>
+      <div>User: Admin</div>
+    </div>
 
-      <aside class="right-panel" aria-label="Summary panel">
-        <h3>Summary</h3>
-        <div class="summary">
-          <p><strong>Total Items:</strong> 3</p>
-          <p><strong>Total Quantity:</strong> 23</p>
-          <p><strong>Total Amount:</strong> RM608.00</p>
-        </div>
-        <a href="#" class="btn" role="button">Submit Requisition</a>
-      </aside>
+    <!-- KPI Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3>Total Sales</h3>
+        <p>RM 120,000</p>
+      </div>
+      <div class="card">
+        <h3>Purchase Orders</h3>
+        <p>45</p>
+      </div>
+      <div class="card">
+        <h3>Inventory Stock</h3>
+        <p>3,250</p>
+      </div>
+      <div class="card">
+        <h3>Pending Invoices</h3>
+        <p>12</p>
+      </div>
     </div>
   </div>
+
 </body>
 </html>
